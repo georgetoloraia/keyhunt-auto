@@ -1,5 +1,8 @@
 # keyhunt
 
+[README-for-auto.md](README-for-auto.md)
+
+
 Tool for hunt privatekeys for crypto currencies that use secp256k1 elliptic curve
 
 Post: https://bitcointalk.org/index.php?topic=5322040.0
