@@ -1,7 +1,6 @@
+For DOC to how use Automation see this link --> [README-for-auto.md](README-for-auto.md)
+
 # keyhunt
-
-[README-for-auto.md](README-for-auto.md)
-
 
 Tool for hunt privatekeys for crypto currencies that use secp256k1 elliptic curve
 
