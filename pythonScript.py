@@ -27,6 +27,7 @@ def run_keyhunt(prefix, range_min, range_max, mode="vanity", start_key=None):
         KEYHUNT_PATH,
         "-m", mode,
         "-l", "compress",  # Compressed addresses
+        "-f", "unsolvedpuzzles.rmd",
         "-r", f"{range_min}:{range_max}",
         "-v", prefix,
         "-t", f"{str(input("input CPU theads number: "))}"
