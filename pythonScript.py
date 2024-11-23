@@ -26,7 +26,7 @@ def run_keyhunt(prefix, range_min, range_max, mode="vanity", start_key=None):
     command = [
         KEYHUNT_PATH,
         "-m", mode,
-        "-f", "compress",  # Compressed addresses
+        "-l", "compress",  # Compressed addresses
         "-r", f"{range_min}:{range_max}",
         "-v", prefix,
         "-t", f"{str(input("input CPU theads number: "))}"
@@ -93,7 +93,7 @@ def main():
     # Initial search range
     range_min = INITIAL_MIN_RANGE
     range_max = INITIAL_MAX_RANGE
-    prefix = RMD160_HASH[:8]  # Use the first few characters of rmd160 as prefix
+    prefix = RMD160_HASH[:f"int{input("Input the Prefix Lenght")}"]  # Use the first few characters of rmd160 as prefix
 
     while range_max - range_min > 1:
         # Search for matching prefix
