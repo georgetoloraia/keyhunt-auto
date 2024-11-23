@@ -29,7 +29,7 @@ def run_keyhunt(prefix, range_min, range_max, mode="vanity", start_key=None):
         "-f", "compress",  # Compressed addresses
         "-r", f"{range_min}:{range_max}",
         "-v", prefix,
-        "-t", "10"
+        "-t", f"{str(input("input CPU theads number: "))}"
     ]
     if start_key:
         command.extend(["-s", start_key])  # Start from the given private key
