@@ -93,7 +93,8 @@ def main():
     # Initial search range
     range_min = INITIAL_MIN_RANGE
     range_max = INITIAL_MAX_RANGE
-    prefix = RMD160_HASH[:f"int{input("Input the Prefix Lenght")}"]  # Use the first few characters of rmd160 as prefix
+    lengh = int(input("Input Prefix Lenght: "))
+    prefix = RMD160_HASH[:lengh]  # Use the first few characters of rmd160 as prefix
 
     while range_max - range_min > 1:
         # Search for matching prefix
