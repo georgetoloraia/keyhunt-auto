@@ -53,10 +53,10 @@ def process_keyhunt_output(process, timeout=600):
 
         if "Vanity Private Key:" in line:
             private_key = line.split(":")[1].strip()
-            # logging.info(f"Vanity Private Key found: {private_key}")
+            logging.info(f"Vanity Private Key found: {private_key}")
         elif "rmd160" in line:
             rmd160 = line.split(" ")[-1].strip()
-            # logging.info(f"rmd160 found: {rmd160}")
+            logging.info(f"rmd160 found: {rmd160}")
 
         if private_key and rmd160:
             return private_key, rmd160
@@ -73,7 +73,7 @@ def main():
     prefix = ADDRESS[:length]
 
     while range_max - range_min > 1000:
-        logging.info(f"Search range: {range_min} - {range_max}")
+        # logging.info(f"Search range: {range_min} - {range_max}")
         process = run_keyhunt(prefix, range_min, range_max)
         private_key, rmd160 = process_keyhunt_output(process)
 
