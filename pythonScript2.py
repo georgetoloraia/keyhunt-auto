@@ -77,7 +77,7 @@ def main():
                 range_max = INITIAL_MAX_RANGE
                 length += 1
                 prefix = ADDRESS[:length]
-                logging.info(f"Range reset. New prefix length: {length}, prefix: {prefix}")
+                logging.info(f"\nRange reset. New prefix length: {length}, prefix: {prefix}\n")
 
             # Save the private key
             with open(FOUND_KEYS_FILE, "a") as f:
