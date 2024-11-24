@@ -1,6 +1,5 @@
 import subprocess
 import logging
-import time
 
 # Configurations
 KEYHUNT_PATH = "./keyhunt"
@@ -38,19 +37,14 @@ def run_keyhunt(prefix, range_min, range_max, mode="vanity"):
     return subprocess.Popen(command, stdout=subprocess.PIPE, text=True)
 
 
-def process_keyhunt_output(process, timeout=6000):
+def process_keyhunt_output(process):
     """
     Reads and processes the output of the keyhunt process.
     """
     private_key = None
     rmd160 = None
-    # start_time = time.time()
 
     for line in iter(process.stdout.readline, ''):
-        # if time.time() - start_time > timeout:
-        #     logging.error("Keyhunt output processing timed out.")
-        #     break
-
         if "Vanity Private Key:" in line:
             private_key = line.split(":")[1].strip()
             logging.info(f"Vanity Private Key found: {private_key}")
@@ -69,51 +63,41 @@ def main():
     THREADS = int(input("Input THREADS: ")) if not THREADS else THREADS
     range_min = INITIAL_MIN_RANGE
     range_max = INITIAL_MAX_RANGE
-    length = 5 #int(input("Input Prefix Length: "))
+    length = 4  # Starting prefix length
     prefix = ADDRESS[:length]
 
     while range_max - range_min > 1:
-        # logging.info(f"Search range: {range_min} - {range_max}")
         process = run_keyhunt(prefix, range_min, range_max)
         private_key, rmd160 = process_keyhunt_output(process)
 
         if private_key and rmd160:
-
-            if range_max - range_min < 100000:
+            # Check if range needs resetting
+            if range_max - range_min < 1000000:
                 range_min = INITIAL_MIN_RANGE
                 range_max = INITIAL_MAX_RANGE
-                length = length + 1
+                length += 1
+                prefix = ADDRESS[:length]
+                logging.info(f"Range reset. New prefix length: {length}, prefix: {prefix}")
 
-                logging.info("Search completed.\n\n")
+            # Save the private key
+            with open(FOUND_KEYS_FILE, "a") as f:
+                f.write(f"{private_key} : {rmd160}\n")
 
-                with open(FOUND_KEYS_FILE, "a") as f:
-                    f.write(f"{private_key} : {rmd160}\n")
+            # Check for correct rmd160
+            if rmd160 == RMD160_HASH:
+                logging.info(f"Success! Found private key: {private_key}")
+                break
 
-                # Check if we found the correct rmd160
-                if rmd160 == RMD160_HASH:
-                    logging.info(f"Success! Found private key: {private_key}")
-                    break
-
-            elif int(private_key, 16) <= 147573952589676412927:
-                # Save the private key
-                with open(FOUND_KEYS_FILE, "a") as f:
-                    f.write(f"{private_key} : {rmd160}\n")
-
-                # Check if we found the correct rmd160
-                if rmd160 == RMD160_HASH:
-                    logging.info(f"Success! Found private key: {private_key}")
-                    break
-
-                # Narrow the range
-                range_min = int(private_key, 16) + 1
-                range_max = range_min + int((range_max - range_min) * NARROW_FACTOR)
+            # Narrow the range
+            range_min = int(private_key, 16) + 1
+            range_max = range_min + int((range_max - range_min) * NARROW_FACTOR)
         else:
+            # Expand range slightly
             range_min += int((range_max - range_min) * NARROW_FACTOR)
 
         logging.info(f"Updated range: {range_min} - {range_max}")
 
     logging.info("Search completed.")
-
 
 
 if __name__ == "__main__":
