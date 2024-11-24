@@ -70,7 +70,7 @@ def main():
         process = run_keyhunt(prefix, range_min, range_max)
         private_key, rmd160 = process_keyhunt_output(process)
 
-        if private_key and rmd160:
+        if private_key and rmd160 and int(private_key, 16) <= 147573952589676412927:
             # Check if range needs resetting
             if range_max - range_min < 1000000:
                 range_min = INITIAL_MIN_RANGE
