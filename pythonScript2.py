@@ -85,7 +85,7 @@ def main():
 
             # Check for correct rmd160
             if rmd160 == RMD160_HASH:
-                logging.info(f"Success! Found private key: {private_key}")
+                logging.info(f"\n--- Success! ---\nFound private key: {private_key}\n")
                 break
 
             # Narrow the range
