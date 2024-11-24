@@ -47,16 +47,16 @@ def process_keyhunt_output(process, timeout=600):
     start_time = time.time()
 
     for line in iter(process.stdout.readline, ''):
-        if time.time() - start_time > timeout:
-            logging.error("Keyhunt output processing timed out.")
-            break
+        # if time.time() - start_time > timeout:
+        #     logging.error("Keyhunt output processing timed out.")
+        #     break
 
         if "Vanity Private Key:" in line:
             private_key = line.split(":")[1].strip()
-            logging.info(f"Vanity Private Key found: {private_key}")
+            # logging.info(f"Vanity Private Key found: {private_key}")
         elif "rmd160" in line:
             rmd160 = line.split(" ")[-1].strip()
-            logging.info(f"rmd160 found: {rmd160}")
+            # logging.info(f"rmd160 found: {rmd160}")
 
         if private_key and rmd160:
             return private_key, rmd160
@@ -72,7 +72,7 @@ def main():
     length = int(input("Input Prefix Length: "))
     prefix = ADDRESS[:length]
 
-    while range_max - range_min > 1:
+    while range_max - range_min > 1000:
         logging.info(f"Search range: {range_min} - {range_max}")
         process = run_keyhunt(prefix, range_min, range_max)
         private_key, rmd160 = process_keyhunt_output(process)
@@ -82,12 +82,12 @@ def main():
                 # Save the private key
                 with open(FOUND_KEYS_FILE, "a") as f:
                     f.write(f"{private_key}\n")
-    
+
                 # Check if we found the correct rmd160
                 if rmd160 == RMD160_HASH:
                     logging.info(f"Success! Found private key: {private_key}")
                     break
-                
+
                 # Narrow the range
                 range_min = int(private_key, 16) + 1
                 range_max = range_min + int((range_max - range_min) * NARROW_FACTOR)
