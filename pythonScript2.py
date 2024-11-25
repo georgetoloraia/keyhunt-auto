@@ -72,7 +72,7 @@ def main():
 
         if private_key and rmd160 and int(private_key, 16) <= 147573952589676412927:
             # Check if range needs resetting
-            if range_max - range_min < 1000000:
+            if range_max - range_min < 100000000:
                 range_min = INITIAL_MIN_RANGE
                 range_max = INITIAL_MAX_RANGE
                 length += 1
