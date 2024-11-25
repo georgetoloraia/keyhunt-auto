@@ -82,6 +82,7 @@ def main():
             # Save the private key
             with open(FOUND_KEYS_FILE, "a") as f:
                 f.write(f"{private_key} : {rmd160}\n")
+                f.close()
 
             # Check for correct rmd160
             if rmd160 == RMD160_HASH:
